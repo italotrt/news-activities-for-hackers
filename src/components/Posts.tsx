@@ -7,13 +7,15 @@ import PostsLoading from './PostsLoading';
 
 function Posts() {
     const [displayType, setDisplayType] = useState<'topstories' | 'newstories'>('topstories');
-    const postsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+    const postsPerPage = 30;
+    const totalAmountOfPages = Math.ceil(500 / postsPerPage);
 
     const fetchPosts = async () => {
         const response = await fetch(`https://hacker-news.firebaseio.com/v0/${displayType}.json`);
         const topStoriesIDs = await response.json();
 
-        const postData = await Promise.all(topStoriesIDs.slice(0, postsPerPage).map(async (id: number) => {
+        const postData = await Promise.all(topStoriesIDs.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage).map(async (id: number) => {
             const postResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
             return postResponse.json();
         }));
@@ -21,7 +23,7 @@ function Posts() {
     }
 
     const { data: postData = [], isLoading } = useQuery({
-        queryKey: ['stories', displayType],
+        queryKey: ['stories', displayType, currentPage],
         queryFn: fetchPosts,
     });
 
@@ -33,10 +35,11 @@ function Posts() {
 
     const handleDisplayTypeChange = (type: 'topstories' | 'newstories') => {
         setDisplayType(type);
+        setCurrentPage(1);
     }
 
     const handlePagination = (event: React.ChangeEvent<unknown>, value: number) => {
-
+        setCurrentPage(value);
     }
 
     const handleTime = (timestamp: number) => {
@@ -113,7 +116,13 @@ function Posts() {
             </List>
         ))}
 
-        <Pagination count={10} color="primary" style={{ marginTop: '10px'}} onChange={handlePagination} />
+        <Pagination 
+            count={totalAmountOfPages}
+            page={currentPage}
+            color="primary"
+            style={{ marginTop: '10px'}}
+            onChange={handlePagination}
+        />
     </Paper>
     )
 }

@@ -8,6 +8,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import PolicyIcon from '@mui/icons-material/Policy';
 import EmailIcon from '@mui/icons-material/Email';
 import WorkIcon from '@mui/icons-material/Work';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import { useState } from 'react';
 
@@ -25,8 +26,8 @@ export default function NavBar() {
     return (
         <>
             <AppBar position='sticky' style={{ backgroundColor: '#ff6600'}}>
-                <Toolbar>
-                    <IconButton 
+                <Toolbar style={{ justifyContent:'space-between' }}>
+                    <IconButton
                         edge="start"
                         aria-label="menu"
                         style={{ marginRight: '10px'}}
@@ -34,9 +35,10 @@ export default function NavBar() {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography fontWeight="bold" variant="h5" style={{ color: 'black'}}>
+                    <Typography fontWeight="bold" variant="h5" color='black'>
                         Hacker News
                     </Typography>
+                    <AccountBoxIcon style={{ color: 'black' }}/>
                 </Toolbar>
             </AppBar>
 
