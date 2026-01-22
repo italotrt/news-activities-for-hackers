@@ -24,7 +24,7 @@ export default function NavBar() {
 
     return (
         <>
-            <AppBar position='sticky' sx={{ bgcolor: '#ff6600'}}>
+            <AppBar position='sticky' style={{ backgroundColor: '#ff6600'}}>
                 <Toolbar>
                     <IconButton 
                         edge="start"
