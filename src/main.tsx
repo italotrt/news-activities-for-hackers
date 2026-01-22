@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/news-activities-for-hackers/" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
