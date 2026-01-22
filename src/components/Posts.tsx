@@ -38,7 +38,7 @@ function Posts() {
         setCurrentPage(1);
     }
 
-    const handlePagination = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePagination = (_event: React.ChangeEvent<unknown>, value: number) => {
         setCurrentPage(value);
     }
 
