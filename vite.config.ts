@@ -10,4 +10,5 @@ export default defineConfig({
       },
     }),
   ],
+  base: '/news-activities-for-hackers/',
 })
