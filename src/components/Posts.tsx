@@ -60,7 +60,14 @@ function Posts() {
 
 
   return (
-    <Paper elevation={3} sx={{ padding: '20px', margin: { sm: '20px 100px', xs: '0px' }, backgroundColor: '#f6f6ef' }}>
+    <Paper 
+        elevation={3} 
+        sx={{ 
+            padding: '20px', 
+            margin: { sm: '20px 100px', xs: '0px' }, 
+            backgroundColor: '#f6f6ef'
+        }}
+    >
         <ButtonGroup variant="text" style={{ marginBottom: '20px' }}>
             <Typography fontWeight="bold" style={{ margin: '10px' }}>
                 Show by:

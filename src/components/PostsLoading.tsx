@@ -5,9 +5,9 @@ function PostsLoading() {
     return (
         <Paper
             elevation={3} 
-            style={{ 
+            sx={{ 
                 padding: '20px',
-                marginTop: '20px',
+                margin: {sm: '20px 100px', xs: '0px'},
                 backgroundColor: '#f6f6ef',
                 justifyContent: 'center',
                 display: 'flex',
