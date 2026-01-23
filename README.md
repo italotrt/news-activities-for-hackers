@@ -16,7 +16,7 @@ The tech stack of this project is using a React + Typescript + Vite framework, M
 
 ## How to run
 
-After cloning the repo, the application can be run by using the command below, this will make it accessible at the localhost:5173 on your web browser.
+After cloning the repo, the application can be run by using the command below, this will make it accessible at the localhost shown in the terminal.
 
 ```
   npm run dev
