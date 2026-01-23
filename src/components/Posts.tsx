@@ -60,17 +60,17 @@ function Posts() {
 
 
   return (
-    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px', backgroundColor: '#f6f6ef' }}>
+    <Paper elevation={3} sx={{ padding: '20px', margin: { sm: '20px 100px', xs: '0px' }, backgroundColor: '#f6f6ef' }}>
         <ButtonGroup variant="text" style={{ marginBottom: '20px' }}>
-            <Typography fontWeight="bold" style={{ margin: '10px 10px 10px 0' }}>
+            <Typography fontWeight="bold" style={{ margin: '10px' }}>
                 Show by:
             </Typography>
 
-            <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')}>
+            <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={displayType === 'newstories'}>
                 New Posts
             </Button>
 
-            <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')}>
+            <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={displayType === 'topstories'}>
                 Top Posts
             </Button>
         </ButtonGroup>
@@ -98,7 +98,7 @@ function Posts() {
                     </Link>
                 </ListItem>
 
-                <ListItem style={{ gap: '10px' }}>
+                <ListItem style={{ gap: '10px', flexWrap: 'wrap' }}>
                     <IconButton aria-label="upvote" color="primary" size='small'>
                         <ArrowCircleUp />
                     </IconButton>
@@ -120,7 +120,11 @@ function Posts() {
             count={totalAmountOfPages}
             page={currentPage}
             color="primary"
-            style={{ marginTop: '10px'}}
+            style={{ marginTop: '10px',
+                alignContent: 'center',
+                justifyContent: 'center',
+                display: 'flex'
+            }}
             onChange={handlePagination}
         />
     </Paper>

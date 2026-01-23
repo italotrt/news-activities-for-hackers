@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -26,7 +26,7 @@ export default function NavBar() {
     return (
         <>
             <AppBar position='sticky' style={{ backgroundColor: '#ff6600'}}>
-                <Toolbar style={{ justifyContent:'space-between' }}>
+                <Toolbar style={{ justifyContent:'space-between'}}>
                     <IconButton
                         edge="start"
                         aria-label="menu"
@@ -35,10 +35,14 @@ export default function NavBar() {
                     >
                         <MenuIcon/>
                     </IconButton>
+
                     <Typography fontWeight="bold" variant="h5" color='black'>
                         Hacker News
                     </Typography>
-                    <AccountBoxIcon style={{ color: 'black' }}/>
+
+                    <Button style={{ color:'black' }} endIcon={<AccountBoxIcon />} >
+                        Login
+                    </Button>
                 </Toolbar>
             </AppBar>
 
