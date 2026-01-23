@@ -36,7 +36,7 @@ describe('testNavBarComponent', () => {
 });
 
 describe('testPostComponent', () => {
-    test('renders Posts component', async () => {
+    test('fetches Posts details and fill component', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Posts />
@@ -45,5 +45,26 @@ describe('testPostComponent', () => {
 
         const postsLoadingComponent = screen.getByText(/Loading posts/i);
         expect(postsLoadingComponent).toBeInTheDocument();
+
+        const commentsButtons = await screen.findAllByText(/Comments/i, {}, { timeout: 5000 });
+        expect(commentsButtons.length).toBeGreaterThan(0);
+    });
+
+    test('change Posts display type', async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Posts />
+            </QueryClientProvider>
+        );
+
+        const newPostsButton = await screen.findByText(/New Posts/i);
+        expect(newPostsButton).toBeInTheDocument();
+        fireEvent.click(newPostsButton);
+
+        const postsLoadingComponent = screen.getByText(/Loading posts/i);
+        expect(postsLoadingComponent).toBeInTheDocument();
+
+        const commentsButtons = await screen.findAllByText(/Comments/i, {}, { timeout: 5000 });
+        expect(commentsButtons.length).toBeGreaterThan(0);
     });
 });
