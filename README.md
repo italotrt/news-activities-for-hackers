@@ -25,7 +25,7 @@ After cloning the repo, the application can be run by using the command below, t
 ## Architecture
 
 ### Data Source
-   - [Hacker News API](https://news.ycombinator.com/): The project uses the API available from the original website.
+   - [Hacker News API](https://github.com/HackerNews/API): The project uses the API available from the original website.
 
 ### Components
    - The components and icons used in the page are from [MUI Materials](https://mui.com/) library that served as a base.
