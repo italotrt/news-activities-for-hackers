@@ -4,6 +4,7 @@ import { ArrowCircleDown, ArrowCircleUp } from '@mui/icons-material';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import PostsLoading from './PostsLoading';
+import ErrorState from './ErrorState';
 
 function Posts() {
     const [displayType, setDisplayType] = useState<'topstories' | 'newstories'>('topstories');
@@ -11,25 +12,42 @@ function Posts() {
     const postsPerPage = 30;
     const totalAmountOfPages = Math.ceil(500 / postsPerPage);
 
-    const fetchPosts = async () => {
-        const response = await fetch(`https://hacker-news.firebaseio.com/v0/${displayType}.json`);
-        const topStoriesIDs = await response.json();
-
-        const postData = await Promise.all(topStoriesIDs.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage).map(async (id: number) => {
-            const postResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-            return postResponse.json();
-        }));
-        return postData;
-    }
-
-    const { data: postData = [], isLoading } = useQuery({
-        queryKey: ['stories', displayType, currentPage],
-        queryFn: fetchPosts,
+    const { data: storyIDs = [], isLoading: isLoadingIDs, isError: isErrorIDs } = useQuery<number[]>({
+        queryKey: ['storyIDs', displayType],
+        queryFn: async () => {
+            const response = await fetch(`https://hacker-news.firebaseio.com/v0/${displayType}.json`);
+            if (!response.ok) throw null;
+            return response.json();
+        },
+        staleTime: 5 * 60 * 1000,
     });
+
+    const pageIDs = storyIDs.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
+
+    const { data: postData = [], isLoading: isLoadingPosts, isError: isErrorPosts } = useQuery({
+        queryKey: ['posts', displayType, currentPage],
+        queryFn: async () => {
+            return Promise.all(pageIDs.map(async (id: number) => {
+                const postResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+                if (!postResponse.ok) throw null;
+                return postResponse.json();
+            }));
+        },
+        enabled: pageIDs.length > 0,
+    });
+
+    const isLoading = isLoadingIDs || isLoadingPosts;
+    const isError = isErrorIDs || isErrorPosts;
 
     if (isLoading) {
         return (
             <PostsLoading />
+        );
+    }
+
+    if (isError) {
+        return (
+            <ErrorState />
         );
     }
 
@@ -57,7 +75,6 @@ function Posts() {
         if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
         return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
     }
-
 
   return (
     <Paper 
