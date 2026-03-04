@@ -1,7 +1,7 @@
 # Overview
 This is a redesigned implementation of [Hacker News](https://news.ycombinator.com/) as a modern web application.
 
-You can visualise the deployed version of the project at https://italotrt.github.io/news-activities-for-hackers/
+You can visualise the deployed version of the project at the [deployed page](https://italotrt.github.io/news-activities-for-hackers/).
 
 The current stage of this web application offers:
 
@@ -13,6 +13,9 @@ The current stage of this web application offers:
 ### TechStack
 
 The tech stack of this project is using a React + Typescript + Vite framework, MUI materials for the components, TanStack Query to handle the API calls in order to populate the components.
+
+
+For improving the code quality, there is a SonarQube pipeline that scans the code every time there's a new commit to the main branch. The results of the SQ scan can be viewed [here](https://sonarcloud.io/project/overview?id=italotrt_news-activities-for-hackers).
 
 ## How to run
 
@@ -36,6 +39,7 @@ After cloning the repo, the application can be run by using the command below, t
 ## Testing
 
 Run `npm test` in order to run the existing test cases.
+Run `npm run test:coverage` to get the coverage of the test cases.
 
 The current test cases only feature Integration test for the components rendered on the main page.
 
@@ -53,10 +57,10 @@ The assumptions make throughtout the development can be seen in the [Pull Reques
 
 <img width="2370" height="1326" alt="Screenshot 2026-01-23 at 16 34 25" src="https://github.com/user-attachments/assets/9aeae12c-f108-4ae4-9762-a7206eb59de4" />
 
-Pagination:
+### Pagination
 <img width="2436" height="1434" alt="image" src="https://github.com/user-attachments/assets/1e16aae0-250d-4c9a-8b3f-3749e01296df" />
 <img width="2462" height="1452" alt="image" src="https://github.com/user-attachments/assets/e0f12e73-d704-4260-a7d6-6479b5802628" />
 
-Testing:
+### Testing
 <img width="466" height="308" alt="image" src="https://github.com/user-attachments/assets/7f9dafea-a17f-45e4-abc6-8f406c37fff8" />
-
+<img width="787" height="839" alt="image" src="https://github.com/user-attachments/assets/f0d50001-b3a8-49ce-afa6-2fe180a19803" />
