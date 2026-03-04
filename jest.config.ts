@@ -10,7 +10,12 @@ const config: Config.InitialOptions = {
     },
     moduleNameMapper: {
         '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/mocks/fileMocks.js',
-    },
-};
+    },    collectCoverageFrom: [
+        'src/**/*.{ts,tsx}',
+        '!src/**/*.d.ts',
+        '!src/main.tsx',
+    ],
+    coverageReporters: ['lcov', 'text'],
+    coverageDirectory: 'coverage',};
 
 export default config;
