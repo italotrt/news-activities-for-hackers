@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import NavBar from '../../components/NavBar';
-import Posts from '../../components/Posts';
+import NavBar from '../components/NavBar';
+import Posts from '../components/Posts';
 import '@testing-library/jest-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import HomePage from '../HomePage';
+import HomePage from './HomePage';
 
 const queryClient = new QueryClient({
     defaultOptions: {

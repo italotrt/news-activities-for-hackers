@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItemIcon, ListItemText, Button, ListItemButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -50,63 +50,66 @@ export default function NavBar() {
                 anchor="left" 
                 open={drawerOpen} 
                 onClose={handleDrawerClose}
+                PaperProps={{
+                    sx: { width: 200 },
+                }}
             >
                 <List>
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <AssignmentIcon />
                         </ListItemIcon>
                         <ListItemText primary="Guidelines" />
-                    </ListItem>
+                    </ListItemButton>
 
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <QuestionAnswerIcon />
                         </ListItemIcon>
                         <ListItemText primary="FAQ" />
-                    </ListItem>
+                    </ListItemButton>
 
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <ListAltIcon />
                         </ListItemIcon>
                         <ListItemText primary="Lists" />
-                    </ListItem>
+                    </ListItemButton>
 
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <StorageIcon />
                         </ListItemIcon>
                         <ListItemText primary="API" />
-                    </ListItem>
+                    </ListItemButton>
 
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <SecurityIcon />
                         </ListItemIcon>
                         <ListItemText primary="Security" />
-                    </ListItem>
+                    </ListItemButton>
 
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <PolicyIcon />
                         </ListItemIcon>
                         <ListItemText primary="Legal" />
-                    </ListItem>
+                    </ListItemButton>
 
-                    <ListItem onClick={handleDrawerClose}>
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <WorkIcon />
                         </ListItemIcon>
                         <ListItemText primary="Apply to YC" />
-                    </ListItem>
-                    
-                    <ListItem onClick={handleDrawerClose}>
+                    </ListItemButton>
+
+                    <ListItemButton onClick={handleDrawerClose}>
                         <ListItemIcon>
                             <EmailIcon />
                         </ListItemIcon>
                         <ListItemText primary="Contact" />
-                    </ListItem>
+                    </ListItemButton>
                 </List>
             </Drawer>
         </>

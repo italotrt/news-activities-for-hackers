@@ -85,19 +85,24 @@ function Posts() {
             backgroundColor: '#f6f6ef'
         }}
     >
-        <ButtonGroup variant="text" style={{ marginBottom: '20px' }}>
-            <Typography fontWeight="bold" style={{ margin: '10px' }}>
-                Show by:
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <Typography fontWeight="bold" variant="h6">
+                {displayType === 'topstories' ? 'Top Posts' : 'New Posts'}
             </Typography>
+            <ButtonGroup variant="text">
+                <Typography fontWeight="bold" style={{ margin: '10px' }}>
+                    Show by:
+                </Typography>
 
-            <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={displayType === 'newstories'}>
-                New Posts
-            </Button>
+                <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={displayType === 'newstories'}>
+                    New Posts
+                </Button>
 
-            <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={displayType === 'topstories'}>
-                Top Posts
-            </Button>
-        </ButtonGroup>
+                <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={displayType === 'topstories'}>
+                    Top Posts
+                </Button>
+            </ButtonGroup>
+        </div>
 
         <Divider/>
 
