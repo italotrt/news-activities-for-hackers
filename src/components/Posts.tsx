@@ -7,6 +7,26 @@ import { useQuery } from '@tanstack/react-query';
 import PostsLoading from './PostsLoading';
 import ErrorState from './ErrorState';
 
+interface SearchHit {
+  objectID: string;
+  title: string;
+  url: string;
+  author: string;
+  points: number;
+  num_comments: number;
+  created_at: string;
+}
+
+interface HackerNewsPost {
+  id: number;
+  title: string;
+  url: string;
+  by: string;
+  score: number;
+  descendants: number;
+  time: number;
+}
+
 function Posts() {
     const [searchQuery, setSearchQuery] = useState('');
     const [displayType, setDisplayType] = useState<'topstories' | 'newstories'>('topstories');
@@ -22,6 +42,19 @@ function Posts() {
             return response.json();
         },
         staleTime: 5 * 60 * 1000,
+        enabled: !searchQuery,
+    });
+
+    const { data: searchData, isLoading: isLoadingSearch, isError: isErrorSearch } = useQuery({
+        queryKey: ['search', searchQuery, currentPage],
+        queryFn: async () => {
+            const response = await fetch(
+                `http://hn.algolia.com/api/v1/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage - 1}`
+            );
+            if (!response.ok) throw null;
+            return response.json();
+        },
+        enabled: !!searchQuery,
     });
 
     const pageIDs = storyIDs.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
@@ -35,15 +68,18 @@ function Posts() {
                 return postResponse.json();
             }));
         },
-        enabled: pageIDs.length > 0,
+        enabled: pageIDs.length > 0 && !searchQuery,
     });
 
-    const isLoading = isLoadingIDs || isLoadingPosts;
-    const isError = isErrorIDs || isErrorPosts;
+    const isLoading = searchQuery ? isLoadingSearch : (isLoadingIDs || isLoadingPosts);
+    const isError = searchQuery ? isErrorSearch : (isErrorIDs || isErrorPosts);
+    const displayData: (SearchHit | HackerNewsPost)[] = searchQuery ? (searchData?.hits || []) : postData;
+    const totalSearchPages = searchQuery ? (searchData?.nbPages || 1) : totalAmountOfPages;
 
     const handleDisplayTypeChange = (type: 'topstories' | 'newstories') => {
         setDisplayType(type);
         setCurrentPage(1);
+        setSearchQuery('');
     }
 
     const handlePagination = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -52,6 +88,7 @@ function Posts() {
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
+        setCurrentPage(1);
     }
 
     const handleTime = (timestamp: number) => {
@@ -90,7 +127,7 @@ function Posts() {
             }}
         >
             <Typography fontWeight="bold" variant="h6">
-                {displayType === 'topstories' ? 'Top Posts' : 'New Posts'}
+                {searchQuery ? 'Searched Posts' : (displayType === 'topstories' ? 'Top Posts' : 'New Posts')}
             </Typography>
 
             <Box 
@@ -103,7 +140,7 @@ function Posts() {
                 }}
             >
                 <SearchIcon sx={{ color: 'action.active' }} />
-                <TextField variant="outlined" fullWidth label="Search" value={searchQuery} onChange={handleSearchChange} disabled={isError}/>
+                <TextField variant="outlined" fullWidth label="Search" value={searchQuery} onChange={handleSearchChange} disabled={!searchQuery && isError}/>
             </Box>
 
             <ButtonGroup variant="text">
@@ -111,11 +148,11 @@ function Posts() {
                     Show by:
                 </Typography>
 
-                <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={displayType === 'newstories' || isLoading || isError}>
+                <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={!searchQuery && (displayType === 'newstories' || isLoading || isError)}>
                     New Posts
                 </Button>
 
-                <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={displayType === 'topstories' || isLoading || isError}>
+                <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={!searchQuery && (displayType === 'topstories' || isLoading || isError)}>
                     Top Posts
                 </Button>
             </ButtonGroup>
@@ -129,18 +166,20 @@ function Posts() {
             <ErrorState />
         ) : (
             <>
-                {postData.map((post) => (
-                    <List key={post.id}>
+                {displayData.map((post) => {
+                    const isSearchResult = 'objectID' in post;
+                    return (
+                    <List key={isSearchResult ? post.objectID : post.id}>
                         <ListItem style={{ gap: '10px' }}>        
                             <AccountCircleIcon/>
                             <Link href="#" variant="body2" color="textSecondary" underline="none">
-                                {post.by}
+                                {isSearchResult ? post.author : post.by}
                             </Link>
                             <Typography variant="body2" color="textSecondary" display="inline">
                                 •
                             </Typography>
                             <Typography variant="body2" color="textSecondary" display="inline">
-                                {handleTime(post.time)}
+                                {isSearchResult ? new Date(post.created_at).toLocaleDateString() : handleTime(post.time)}
                             </Typography>
                         </ListItem>
 
@@ -155,21 +194,22 @@ function Posts() {
                                 <ArrowCircleUp />
                             </IconButton>
                             <Typography color='textSecondary' variant="body2">
-                                {post.score}
+                                {isSearchResult ? post.points : post.score}
                             </Typography>
                             <IconButton aria-label="downvote" color="secondary" size='small'>
                                 <ArrowCircleDown />
                             </IconButton>
-                            <Button size="small" variant='text'>{post.descendants} Comments</Button>
+                            <Button size="small" variant='text'>{isSearchResult ? post.num_comments : post.descendants} Comments</Button>
                             <Button size="small" variant='text'>Share</Button>
                             <Button size="small" variant='text'>Save</Button>
                         </ListItem>
                         <Divider/>
                     </List>
-                ))}
+                    );
+                })}
 
                 <Pagination 
-                    count={totalAmountOfPages}
+                    count={totalSearchPages}
                     page={currentPage}
                     color="primary"
                     style={{ marginTop: '10px',
