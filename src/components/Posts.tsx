@@ -41,18 +41,6 @@ function Posts() {
     const isLoading = isLoadingIDs || isLoadingPosts;
     const isError = isErrorIDs || isErrorPosts;
 
-    if (isLoading) {
-        return (
-            <PostsLoading />
-        );
-    }
-
-    if (isError) {
-        return (
-            <ErrorState />
-        );
-    }
-
     const handleDisplayTypeChange = (type: 'topstories' | 'newstories') => {
         setDisplayType(type);
         setCurrentPage(1);
@@ -115,7 +103,7 @@ function Posts() {
                 }}
             >
                 <SearchIcon sx={{ color: 'action.active' }} />
-                <TextField variant="outlined" fullWidth label="Search" value={searchQuery} onChange={handleSearchChange}/>
+                <TextField variant="outlined" fullWidth label="Search" value={searchQuery} onChange={handleSearchChange} disabled={isError}/>
             </Box>
 
             <ButtonGroup variant="text">
@@ -123,11 +111,11 @@ function Posts() {
                     Show by:
                 </Typography>
 
-                <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={displayType === 'newstories'}>
+                <Button variant="text" onClick={() => handleDisplayTypeChange('newstories')} disabled={displayType === 'newstories' || isLoading || isError}>
                     New Posts
                 </Button>
 
-                <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={displayType === 'topstories'}>
+                <Button variant="text" onClick={() => handleDisplayTypeChange('topstories')} disabled={displayType === 'topstories' || isLoading || isError}>
                     Top Posts
                 </Button>
             </ButtonGroup>
@@ -135,56 +123,64 @@ function Posts() {
 
         <Divider/>
 
-        {postData.map((post) => (
-            <List key={post.id}>
-                <ListItem style={{ gap: '10px' }}>        
-                    <AccountCircleIcon/>
-                    <Link href="#" variant="body2" color="textSecondary" underline="none">
-                        {post.by}
-                    </Link>
-                    <Typography variant="body2" color="textSecondary" display="inline">
-                        •
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" display="inline">
-                        {handleTime(post.time)}
-                    </Typography>
-                </ListItem>
+        {isLoading ? (
+            <PostsLoading />
+        ) : isError ? (
+            <ErrorState />
+        ) : (
+            <>
+                {postData.map((post) => (
+                    <List key={post.id}>
+                        <ListItem style={{ gap: '10px' }}>        
+                            <AccountCircleIcon/>
+                            <Link href="#" variant="body2" color="textSecondary" underline="none">
+                                {post.by}
+                            </Link>
+                            <Typography variant="body2" color="textSecondary" display="inline">
+                                •
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" display="inline">
+                                {handleTime(post.time)}
+                            </Typography>
+                        </ListItem>
 
-                <ListItem>
-                    <Link href={post.url} variant="body1" color="textPrimary" underline="none">
-                        {post.title}
-                    </Link>
-                </ListItem>
+                        <ListItem>
+                            <Link href={post.url} variant="body1" color="textPrimary" underline="none">
+                                {post.title}
+                            </Link>
+                        </ListItem>
 
-                <ListItem style={{ gap: '10px', flexWrap: 'wrap' }}>
-                    <IconButton aria-label="upvote" color="primary" size='small'>
-                        <ArrowCircleUp />
-                    </IconButton>
-                    <Typography color='textSecondary' variant="body2">
-                        {post.score}
-                    </Typography>
-                    <IconButton aria-label="downvote" color="secondary" size='small'>
-                        <ArrowCircleDown />
-                    </IconButton>
-                    <Button size="small" variant='text'>{post.descendants} Comments</Button>
-                    <Button size="small" variant='text'>Share</Button>
-                    <Button size="small" variant='text'>Save</Button>
-                </ListItem>
-                <Divider/>
-            </List>
-        ))}
+                        <ListItem style={{ gap: '10px', flexWrap: 'wrap' }}>
+                            <IconButton aria-label="upvote" color="primary" size='small'>
+                                <ArrowCircleUp />
+                            </IconButton>
+                            <Typography color='textSecondary' variant="body2">
+                                {post.score}
+                            </Typography>
+                            <IconButton aria-label="downvote" color="secondary" size='small'>
+                                <ArrowCircleDown />
+                            </IconButton>
+                            <Button size="small" variant='text'>{post.descendants} Comments</Button>
+                            <Button size="small" variant='text'>Share</Button>
+                            <Button size="small" variant='text'>Save</Button>
+                        </ListItem>
+                        <Divider/>
+                    </List>
+                ))}
 
-        <Pagination 
-            count={totalAmountOfPages}
-            page={currentPage}
-            color="primary"
-            style={{ marginTop: '10px',
-                alignContent: 'center',
-                justifyContent: 'center',
-                display: 'flex'
-            }}
-            onChange={handlePagination}
-        />
+                <Pagination 
+                    count={totalAmountOfPages}
+                    page={currentPage}
+                    color="primary"
+                    style={{ marginTop: '10px',
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                        display: 'flex'
+                    }}
+                    onChange={handlePagination}
+                />
+            </>
+        )}
     </Paper>
     )
 }

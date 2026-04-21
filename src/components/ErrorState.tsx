@@ -1,14 +1,10 @@
-import { Paper, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
 
 function ErrorState() { 
     return (
-        <Paper
-            elevation={3} 
-            sx={{ 
-                padding: '20px',
-                margin: {sm: '20px 100px', xs: '0px'},
-                backgroundColor: '#f6f6ef',
+        <Box
+            sx={{
                 justifyContent: 'center',
                 display: 'flex',
                 flexDirection: 'column',
@@ -24,7 +20,7 @@ function ErrorState() {
             <Typography variant="body2" color="textSecondary" align="center">
                 Please try again.
             </Typography>
-        </Paper>
+        </Box>
     );
 }
 
