@@ -1,12 +1,14 @@
-import { Button, ButtonGroup, Divider, List, ListItem, Paper, Typography, Link, IconButton, Pagination } from '@mui/material'
+import { Button, ButtonGroup, Divider, List, ListItem, Paper, Typography, Link, IconButton, Pagination, Box, TextField } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ArrowCircleDown, ArrowCircleUp } from '@mui/icons-material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import PostsLoading from './PostsLoading';
 import ErrorState from './ErrorState';
 
 function Posts() {
+    const [searchQuery, setSearchQuery] = useState('');
     const [displayType, setDisplayType] = useState<'topstories' | 'newstories'>('topstories');
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 30;
@@ -60,6 +62,10 @@ function Posts() {
         setCurrentPage(value);
     }
 
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value);
+    }
+
     const handleTime = (timestamp: number) => {
         const now = Date.now();
         const postTime = timestamp * 1000;
@@ -85,10 +91,33 @@ function Posts() {
             backgroundColor: '#f6f6ef'
         }}
     >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <Box 
+            sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', md: 'row' }, 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                marginBottom: '20px', 
+                gap: 2 
+            }}
+        >
             <Typography fontWeight="bold" variant="h6">
                 {displayType === 'topstories' ? 'Top Posts' : 'New Posts'}
             </Typography>
+
+            <Box 
+                width={{ xs: '100%', md: "30%" }}
+                sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1, 
+                    marginLeft: { xs: '0px', md: '150px' } 
+                }}
+            >
+                <SearchIcon sx={{ color: 'action.active' }} />
+                <TextField variant="outlined" fullWidth label="Search" value={searchQuery} onChange={handleSearchChange}/>
+            </Box>
+
             <ButtonGroup variant="text">
                 <Typography fontWeight="bold" style={{ margin: '10px' }}>
                     Show by:
@@ -102,7 +131,7 @@ function Posts() {
                     Top Posts
                 </Button>
             </ButtonGroup>
-        </div>
+        </Box>
 
         <Divider/>
 
