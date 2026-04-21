@@ -49,7 +49,7 @@ function Posts() {
         queryKey: ['search', searchQuery, currentPage],
         queryFn: async () => {
             const response = await fetch(
-                `http://hn.algolia.com/api/v1/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage - 1}`
+                `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage - 1}`
             );
             if (!response.ok) throw null;
             return response.json();
